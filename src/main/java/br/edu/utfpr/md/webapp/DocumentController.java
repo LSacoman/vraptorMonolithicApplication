@@ -78,8 +78,12 @@ public class DocumentController {
         result.redirectTo(this).list();
     }
     // ADICIONAR PATH /UPDATE/ ID
-    public void update(String id){
-        System.out.println("btn editar clicado " + id);
+    @Path("/update/{id}")
+    public void update(String fileName){
+        System.out.println("btn editar clicado " + fileName);
+        this.documentDAO.getByName(fileName);
+        result.include("documento", fileName);
+        result.forwardTo(this).form();
         // ENVIAR OBJETO COM O ID ENVIADO PARA A PAGINA DE UPDATE
         // result.include("objeto", OBJ);
     }

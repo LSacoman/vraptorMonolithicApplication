@@ -13,4 +13,8 @@ public class DocumentDAO extends BasicDAO<Document, ObjectId> {
     public DocumentDAO(MongoClient mongoClient) {
         super(Document.class, mongoClient, new Morphia(), MongoClientProvider.DATABASE);
     }
+
+    public Document getByName(String fileName) {
+        return this.getDatastore().find(Document.class).field("fileName").equal(fileName).get();
+    }
 }

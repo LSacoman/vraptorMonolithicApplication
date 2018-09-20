@@ -16,8 +16,8 @@
             <td>${keyword.id}</td>
             <td>${keyword.name}</td>
             <td>
-                <a class="btn btn-secondary" href="${linkTo[KeywordController].update}">Editar</a>
-                <a class="btn btn-danger" href="${linkTo[KeywordController].delete}">Deletar</a>
+                <a class="btn btn-secondary" href="${linkTo[KeywordController].update}${keyword.name}">Editar</a>
+                <a class="btn btn-danger" href="${linkTo[KeywordController].delete}${keyword.name}">Deletar</a>
             </td>
         </tr>   
     </c:forEach>

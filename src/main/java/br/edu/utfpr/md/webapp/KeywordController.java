@@ -52,8 +52,12 @@ public class KeywordController {
     }
 
     // ADICIONAR PATH /UPDATE/ ID
+    @Path("/update/{id}")
     public void update(String id) {
         System.out.println("btn editar clicado " + id);
+        this.keywordDAO.getByName(id);
+        result.include("carro", id);
+        result.forwardTo(this).form();
         // ENVIAR OBJETO COM O ID ENVIADO PARA A PAGINA DE UPDATE
         // result.include("objeto", OBJ);
     }

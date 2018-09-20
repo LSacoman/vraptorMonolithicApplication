@@ -52,8 +52,12 @@ public class CategoryController {
     }
 
     // ADICIONAR PATH /UPDATE/ ID
+    @Path("/update/{id}")
     public void update(String id) {
         System.out.println("btn editar clicado " + id);
+        this.categoryDAO.getByName(id);
+        result.include("categoria", id);
+        result.forwardTo(this).form();
         // ENVIAR OBJETO COM O ID ENVIADO PARA A PAGINA DE UPDATE
         // result.include("objeto", OBJ);
     }

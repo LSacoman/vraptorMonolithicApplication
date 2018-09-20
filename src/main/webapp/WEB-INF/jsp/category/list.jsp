@@ -16,8 +16,8 @@
             <td>${category.id}</td>
             <td>${category.name}</td>
             <td>
-                <a class="btn btn-secondary" href="${linkTo[CategoryController].update}">Editar</a>
-                <a class="btn btn-danger" href="${linkTo[CategoryController].delete}">Deletar</a>
+                <a class="btn btn-secondary" href="${linkTo[CategoryController].update}${category.name}">Editar</a>
+                <a class="btn btn-danger" href="${linkTo[CategoryController].delete}${category.name}">Deletar</a>
             </td>
         </tr>   
     </c:forEach>

@@ -32,8 +32,8 @@
                 </c:forEach>
             </td>
             <td>
-                <a class="btn btn-secondary" href="${linkTo[DocumentController].update}">Editar</a>
-                <a class="btn btn-danger" href="${linkTo[DocumentController].delete}">Deletar</a>
+                <a class="btn btn-secondary" href="${linkTo[DocumentController].update}${document.fileName}">Editar</a>
+                <a class="btn btn-danger" href="${linkTo[DocumentController].delete}${document.fileName}">Deletar</a>
             </td>
         </tr>   
     </c:forEach>
