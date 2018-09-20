@@ -51,20 +51,28 @@ public class KeywordController {
         result.redirectTo(this).list();
     }
 
-    // ADICIONAR PATH /UPDATE/ ID
     @Path("/update/{id}")
     public void update(String id) {
-        System.out.println("btn editar clicado " + id);
-        this.keywordDAO.getByName(id);
-        result.include("carro", id);
+        Keyword key = this.keywordDAO.getByName(id);
+        result.include("keyword", key);
         result.forwardTo(this).form();
-        // ENVIAR OBJETO COM O ID ENVIADO PARA A PAGINA DE UPDATE
-        // result.include("objeto", OBJ);
     }
 
-    // ADICIONAR PATH /DELETE/ ID
+    public void atualiza(@Valid @NotNull Keyword keyword) {
+        validator.onErrorForwardTo(this).form();
+        try {
+            this.keywordDAO.save(keyword);
+        } catch (Exception e) {
+            e.printStackTrace();
+            validator.add(new SimpleMessage("dao", "Falha ao Inserir keyword!"));
+        }
+        result.redirectTo(this).list();
+    }
+
+    @Path("/delete/{id}")
     public void delete(String id) {
-        // DELETAR O OBJETO COM ID ENVIADO
-        // REDIRECIONAR PARA PAGINA DE LISTAGEM 
+        Keyword cat = this.keywordDAO.getByName(id);
+        this.keywordDAO.delete(cat);
+        result.forwardTo(this).list();
     }
 }

@@ -6,17 +6,26 @@
     <c:if test="${not empty errors}">
         <c:forEach items="${errors}" var="err">
             <li>${err.category} ${err.message}</li>
-        </c:forEach>
-    </c:if>
+            </c:forEach>
+        </c:if>
 
-    <form action="${linkTo[KeywordController].save}" method="POST">
-        <div class="form-group">
-            <label>Keyword: </label>
-            <input type="text" class="form-control" name="keyword.name"/>
-        </div>
-        <div>
-            <button type="submit" class="btn btn-primary">Gravar</button>
-        </div>
-    </form>
+    <c:if test="${not empty keyword.name}">
+        <form action="${linkTo[KeywordController].atualiza}" method="POST">
+            <input type="text" class="hidden" style="display: none; " name="keyword.id" value="${keyword.id}"/>
+        </c:if>
+
+        <c:if test="${empty keyword.name}">
+            <form action="${linkTo[KeywordController].save}" method="POST">
+            </c:if>
+
+
+            <div class="form-group">
+                <label>Keyword: </label>
+                <input type="text" class="form-control" name="keyword.name" value="${keyword.name}"/>
+            </div>
+            <div>
+                <button type="submit" class="btn btn-primary">Gravar</button>
+            </div>
+        </form>
 </div>
 <c:import url="/WEB-INF/jsp/inc/footer.jsp"/>

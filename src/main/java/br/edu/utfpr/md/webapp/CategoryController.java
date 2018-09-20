@@ -51,20 +51,31 @@ public class CategoryController {
         result.redirectTo(this).list();
     }
 
-    // ADICIONAR PATH /UPDATE/ ID
     @Path("/update/{id}")
     public void update(String id) {
-        System.out.println("btn editar clicado " + id);
-        this.categoryDAO.getByName(id);
-        result.include("categoria", id);
+        Category cat = this.categoryDAO.getByName(id);
+        result.include("categoria", cat);
         result.forwardTo(this).form();
-        // ENVIAR OBJETO COM O ID ENVIADO PARA A PAGINA DE UPDATE
-        // result.include("objeto", OBJ);
     }
 
-    // ADICIONAR PATH /DELETE/ ID
+    @Path("/delete/{id}")
     public void delete(String id) {
-        // DELETAR O OBJETO COM ID ENVIADO
-        // REDIRECIONAR PARA PAGINA DE LISTAGEM 
+        Category cat = this.categoryDAO.getByName(id);
+        this.categoryDAO.delete(cat);
+        result.forwardTo(this).list();
     }
+
+    public void atualiza(@Valid @NotNull Category category) {
+        validator.onErrorForwardTo(this).form();
+        try {
+
+            // ALTERAR METODO PARA UPDATE
+            this.categoryDAO.save(category);
+        } catch (Exception e) {
+            e.printStackTrace();
+            validator.add(new SimpleMessage("dao", "Falha ao Inserir Categoria!"));
+        }
+        result.redirectTo(this).list();
+    }
+
 }

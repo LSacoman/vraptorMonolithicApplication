@@ -20,6 +20,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 
 @Controller
 @Path("/document")
@@ -80,16 +82,40 @@ public class DocumentController {
     // ADICIONAR PATH /UPDATE/ ID
     @Path("/update/{id}")
     public void update(String fileName){
-        System.out.println("btn editar clicado " + fileName);
-        this.documentDAO.getByName(fileName);
-        result.include("documento", fileName);
+        Document doc = this.documentDAO.getByName(fileName);
+        result.include("documento", doc);
         result.forwardTo(this).form();
-        // ENVIAR OBJETO COM O ID ENVIADO PARA A PAGINA DE UPDATE
-        // result.include("objeto", OBJ);
     }
-    // ADICIONAR PATH /DELETE/ ID
+    
+    public void atualiza(String id, String description, String fileName, String date, String lastUpdate, String selectedCategoryName, String[] keywords) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        
+        List<Keyword> keywordList = new ArrayList<>();
+        Category categoriaSelecionada = this.categoryDAO.getByName(selectedCategoryName);
+        
+        for (String keyword : keywords) {
+            Keyword key = this.keywordDAO.getByName(keyword);
+            if (key != null) {
+                keywordList.add(key);
+            }
+        }
+        Document document = new Document(description, sdf.parse(date), sdf.parse(lastUpdate), fileName, loggedUser.getUsuario(), categoriaSelecionada, keywordList);
+
+        
+        validator.onErrorForwardTo(this).form();
+        try {
+            this.documentDAO.save(document);
+        } catch (Exception e) {
+            e.printStackTrace();
+            validator.add(new SimpleMessage("dao", "Falha ao Inserir documento!"));
+        }
+        result.redirectTo(this).list();
+    }
+    
+    @Path("/delete/{id}")
     public void delete(String id){
-        // DELETAR O OBJETO COM ID ENVIADO
-        // REDIRECIONAR PARA PAGINA DE LISTAGEM 
+        Document doc = this.documentDAO.getByName(id);
+        this.documentDAO.delete(doc);
+        result.forwardTo(this).list();
     }
 }

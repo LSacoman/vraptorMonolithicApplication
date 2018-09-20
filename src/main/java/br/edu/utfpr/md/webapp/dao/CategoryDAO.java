@@ -16,4 +16,10 @@ public class CategoryDAO extends BasicDAO<Category, ObjectId>{
     public Category getByName(String name) {
         return this.getDatastore().find(Category.class).field("name").equal(name).get();
     }
+    
+    public void updateCategory(Category category){
+        //this.getDatastore().up
+          //this.createQuery()
+        //this.up
+    }
 }
