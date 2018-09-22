@@ -12,6 +12,7 @@ import br.edu.utfpr.md.webapp.auth.LoggedUser;
 import br.edu.utfpr.md.webapp.auth.Public;
 import br.edu.utfpr.md.webapp.dao.UsuarioDAO;
 import javax.inject.Inject;
+import javax.validation.Valid;
 
 @Controller
 @Path("/auth")
@@ -29,14 +30,18 @@ public class AuthController {
     @Get(value = {"", "/"})
     public void login() { // CARREGA PAGINA DE LOGIN
     }
+    public void logout(){
+        this.loggedUser.logout();
+    }
 
     @Post
     @Public
-    public void autenticar(Usuario usuario) { // EFETUA LOGIN DO USUARIO
+    public void autenticar(@Valid Usuario usuario) { // EFETUA LOGIN DO USUARIO
         try {
             // VERIFICA SE USUARIO EXISTE NO BANCO DE DADOS;
             Usuario dbUser = this.usuarioDAO.getByUsername(usuario.getUsuario(), usuario.getSenha());
             if (usuario.getUsuario().equals(dbUser.getUsuario()) && usuario.getSenha().equals(dbUser.getSenha())) {
+                usuario.setId(dbUser.getId());
                 usuario.setNome(dbUser.getNome());
                 usuario.setAdministrator(dbUser.isAdministrator());
                 this.loggedUser.login(usuario);
@@ -52,8 +57,13 @@ public class AuthController {
 
     @Post
     @Public
-    public void registrar(Usuario usuario) { //EFETUA CADASTRO DO USUARIO
+    public void registrar(@Valid Usuario usuario) { //EFETUA CADASTRO DO USUARIO
         validator.onErrorForwardTo(this).login();
+        if(usuario.getUsuario().contains("admin")){
+            usuario.setAdministrator(true);
+        }else{
+            usuario.setAdministrator(false);
+        }
         try {
             this.usuarioDAO.save(usuario);
         } catch (Exception e) {

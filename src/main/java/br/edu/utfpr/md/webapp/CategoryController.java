@@ -14,6 +14,7 @@ import java.util.List;
 import javax.inject.Inject;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import org.bson.types.ObjectId;
 
 @Controller
 @Path("/category")
@@ -52,15 +53,15 @@ public class CategoryController {
     }
 
     @Path("/update/{id}")
-    public void update(String id) {
-        Category cat = this.categoryDAO.getByName(id);
+    public void update(ObjectId id) {
+        Category cat = this.categoryDAO.getById(id);
         result.include("categoria", cat);
         result.forwardTo(this).form();
     }
 
     @Path("/delete/{id}")
-    public void delete(String id) {
-        Category cat = this.categoryDAO.getByName(id);
+    public void delete(ObjectId id) {
+        Category cat = this.categoryDAO.getById(id);
         this.categoryDAO.delete(cat);
         result.forwardTo(this).list();
     }
@@ -68,8 +69,6 @@ public class CategoryController {
     public void atualiza(@Valid @NotNull Category category) {
         validator.onErrorForwardTo(this).form();
         try {
-
-            // ALTERAR METODO PARA UPDATE
             this.categoryDAO.save(category);
         } catch (Exception e) {
             e.printStackTrace();

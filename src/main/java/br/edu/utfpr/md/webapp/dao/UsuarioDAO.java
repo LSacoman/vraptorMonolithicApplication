@@ -16,4 +16,8 @@ public class UsuarioDAO extends BasicDAO<Usuario, ObjectId>{
     public Usuario getByUsername(String user, String pass) {
         return this.getDatastore().find(Usuario.class).field("usuario").equal(user).field("senha").equal(pass).get();
     }
+    
+    public Usuario getById(ObjectId id){
+        return this.getDatastore().find(Usuario.class).field("_id").equal(id).get();
+    }
 }

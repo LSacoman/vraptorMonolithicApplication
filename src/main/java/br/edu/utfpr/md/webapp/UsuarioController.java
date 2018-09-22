@@ -7,9 +7,8 @@ import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.validator.SimpleMessage;
 import br.com.caelum.vraptor.validator.Validator;
-import br.edu.utfpr.md.model.Keyword;
-import br.edu.utfpr.md.webapp.dao.KeywordDAO;
-import java.util.Date;
+import br.edu.utfpr.md.model.Usuario;
+import br.edu.utfpr.md.webapp.dao.UsuarioDAO;
 import java.util.List;
 import javax.inject.Inject;
 import javax.validation.Valid;
@@ -17,15 +16,15 @@ import javax.validation.constraints.NotNull;
 import org.bson.types.ObjectId;
 
 @Controller
-@Path("/keyword")
-public class KeywordController {
+@Path("/usuario")
+public class UsuarioController {
 
     @Inject
     private Result result;
     @Inject
     private Validator validator;
     @Inject
-    private KeywordDAO keywordDAO;
+    private UsuarioDAO usuarioDAO;
 
     @Path("/new")
     @Get
@@ -34,46 +33,45 @@ public class KeywordController {
 
     @Path(value = {"", "/"})
     @Get
-    public List<Keyword> list() {
-        result.include("mensagem", "esta é uma mensagem");
-        result.include("data", new Date());
-        return keywordDAO.find().asList();
+    public List<Usuario> list() {
+        return usuarioDAO.find().asList();
     }
 
     @Post
-    public void save(@Valid @NotNull Keyword keyword) {
+    public void save(@Valid @NotNull Usuario usuario) {
         validator.onErrorForwardTo(this).form();
         try {
-            this.keywordDAO.save(keyword);
+            this.usuarioDAO.save(usuario);
         } catch (Exception e) {
             e.printStackTrace();
-            validator.add(new SimpleMessage("dao", "Falha ao Inserir keyword!"));
+            validator.add(new SimpleMessage("dao", "Falha ao Inserir usuario!"));
         }
         result.redirectTo(this).list();
     }
 
     @Path("/update/{id}")
     public void update(ObjectId id) {
-        Keyword key = this.keywordDAO.getById(id);
-        result.include("keyword", key);
+        Usuario usuario = this.usuarioDAO.getById(id);
+        result.include("usuario", usuario);
         result.forwardTo(this).form();
     }
 
-    public void atualiza(@Valid @NotNull Keyword keyword) {
+    public void atualiza(@Valid @NotNull Usuario usuario) {
+        System.out.println(usuario.isAdministrator());
         validator.onErrorForwardTo(this).form();
         try {
-            this.keywordDAO.save(keyword);
+            this.usuarioDAO.save(usuario);
         } catch (Exception e) {
             e.printStackTrace();
-            validator.add(new SimpleMessage("dao", "Falha ao Inserir keyword!"));
+            validator.add(new SimpleMessage("dao", "Falha ao Inserir usuario!"));
         }
         result.redirectTo(this).list();
     }
 
     @Path("/delete/{id}")
     public void delete(ObjectId id) {
-        Keyword cat = this.keywordDAO.getById(id);
-        this.keywordDAO.delete(cat);
+        Usuario usuario = this.usuarioDAO.getById(id);
+        this.usuarioDAO.delete(usuario);
         result.forwardTo(this).list();
     }
 }

@@ -2,6 +2,12 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <c:import url="/WEB-INF/jsp/inc/header.jsp"/>
 
+<nav aria-label="breadcrumb">
+    <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="${linkTo[DocumentController].list}">Home</a></li>        
+        <li class="breadcrumb-item active" aria-current="page">Categorias</li>
+    </ol>
+</nav>
 <h1>Listagem de Categorias!</h1>
 <table class="table table-striped">
     <thead class="thead-dark">
@@ -16,8 +22,8 @@
             <td>${category.id}</td>
             <td>${category.name}</td>
             <td>
-                <a class="btn btn-secondary" href="${linkTo[CategoryController].update}${category.name}">Editar</a>
-                <a class="btn btn-danger" href="${linkTo[CategoryController].delete}${category.name}">Deletar</a>
+                <a class="btn btn-secondary" href="${linkTo[CategoryController].update}${category.id}">Editar</a>
+                <a class="btn btn-danger" href="${linkTo[CategoryController].delete}${category.id}">Deletar</a>
             </td>
         </tr>   
     </c:forEach>

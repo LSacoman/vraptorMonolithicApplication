@@ -2,6 +2,13 @@
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 <c:import url="/WEB-INF/jsp/inc/header.jsp"/>
 
+<nav aria-label="breadcrumb">
+  <ol class="breadcrumb">
+    <li class="breadcrumb-item"><a href="${linkTo[DocumentController].list}">Home</a></li>        
+    <li class="breadcrumb-item active" aria-current="page">Documentos</li>
+  </ol>
+</nav>
+
 <h1>Listagem de Documentos!</h1>
 <table class="table table-striped">
     <thead class="thead-dark">
@@ -32,8 +39,8 @@
                 </c:forEach>
             </td>
             <td>
-                <a class="btn btn-secondary" href="${linkTo[DocumentController].update}${document.fileName}">Editar</a>
-                <a class="btn btn-danger" href="${linkTo[DocumentController].delete}${document.fileName}">Deletar</a>
+                <a class="btn btn-secondary" href="${linkTo[DocumentController].update}${document.id}">Editar</a>
+                <a class="btn btn-danger" href="${linkTo[DocumentController].delete}${document.id}">Deletar</a>
             </td>
         </tr>   
     </c:forEach>

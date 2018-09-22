@@ -4,25 +4,25 @@
 <nav aria-label="breadcrumb">
     <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="${linkTo[DocumentController].list}">Home</a></li>        
-        <li class="breadcrumb-item active" aria-current="page">Keywords</li>
+        <li class="breadcrumb-item active" aria-current="page">Usuarios</li>
     </ol>
 </nav>
-<h1>Listagem de Keywords!</h1>
+<h1>Listagem de Usuarios!</h1>
 <table class="table table-striped">
     <thead class="thead-dark">
         <tr>
             <th>ID</th>
-            <th>Keyword</th>
+            <th>Nome</th>
             <th>Ações</th>
         </tr>
     </thead>
-    <c:forEach items="${keywordList}" var="keyword">
+    <c:forEach items="${usuarioList}" var="usuario">
         <tr>
-            <td>${keyword.id}</td>
-            <td>${keyword.name}</td>
+            <td>${usuario.id}</td>
+            <td>${usuario.nome}</td>
             <td>
-                <a class="btn btn-secondary" href="${linkTo[KeywordController].update}${keyword.id}">Editar</a>
-                <a class="btn btn-danger" href="${linkTo[KeywordController].delete}${keyword.id}">Deletar</a>
+                <a class="btn btn-secondary" href="${linkTo[UsuarioController].update}${usuario.id}">Editar</a>
+                <a class="btn btn-danger" href="${linkTo[UsuarioController].delete}${usuario.id}">Deletar</a>
             </td>
         </tr>   
     </c:forEach>

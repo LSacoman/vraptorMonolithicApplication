@@ -13,13 +13,7 @@ public class CategoryDAO extends BasicDAO<Category, ObjectId>{
         super(Category.class, mongoClient, new Morphia(), MongoClientProvider.DATABASE);
     }
     
-    public Category getByName(String name) {
-        return this.getDatastore().find(Category.class).field("name").equal(name).get();
-    }
-    
-    public void updateCategory(Category category){
-        //this.getDatastore().up
-          //this.createQuery()
-        //this.up
+    public Category getById(ObjectId id) {
+        return this.getDatastore().find(Category.class).field("_id").equal(id).get();
     }
 }

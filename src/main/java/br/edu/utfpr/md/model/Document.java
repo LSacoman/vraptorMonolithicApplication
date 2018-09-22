@@ -15,8 +15,6 @@ public class Document {
     private ObjectId id;
     @NotNull
     private String description;
-
-    // private Calendar datadenascimento;
     private Date date;
     private Date lastUpdate;
     private String fileName;

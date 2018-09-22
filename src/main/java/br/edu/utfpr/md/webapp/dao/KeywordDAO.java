@@ -13,7 +13,7 @@ public class KeywordDAO extends BasicDAO<Keyword, ObjectId>{
         super(Keyword.class, mongoClient, new Morphia(), MongoClientProvider.DATABASE);
     }
     
-    public Keyword getByName(String name) {
-        return this.getDatastore().find(Keyword.class).field("name").equal(name).get();
+    public Keyword getById(ObjectId id) {
+        return this.getDatastore().find(Keyword.class).field("_id").equal(id).get();
     }
 }

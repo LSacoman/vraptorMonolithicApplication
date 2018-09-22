@@ -7,6 +7,7 @@ import br.com.caelum.vraptor.Post;
 import br.com.caelum.vraptor.Result;
 import br.com.caelum.vraptor.validator.SimpleMessage;
 import br.com.caelum.vraptor.validator.Validator;
+import br.edu.utfpr.md.converter.ObjectIdVRaptorConverter;
 import br.edu.utfpr.md.model.Category;
 import br.edu.utfpr.md.model.Document;
 import br.edu.utfpr.md.model.Keyword;
@@ -17,11 +18,9 @@ import br.edu.utfpr.md.webapp.dao.KeywordDAO;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import javax.inject.Inject;
-import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
+import org.bson.types.ObjectId;
 
 @Controller
 @Path("/document")
@@ -39,6 +38,7 @@ public class DocumentController {
     private CategoryDAO categoryDAO;
     @Inject
     private LoggedUser loggedUser;
+    ObjectIdVRaptorConverter conversor;
 
     @Path("/new")
     @Get
@@ -50,20 +50,18 @@ public class DocumentController {
     @Path(value = {"", "/"})
     @Get
     public List<Document> list() {
-        result.include("mensagem", "esta é uma mensagem");
-        result.include("data", new Date());
         return documentDAO.find().asList();
     }
 
     @Post
-    public void save(String description, String fileName, String date, String lastUpdate, String selectedCategoryName, String[] keywords) throws ParseException {
+    public void save(String description, String fileName, String date, String lastUpdate, ObjectId selectedCategoryId, ObjectId[] keywords) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         
         List<Keyword> keywordList = new ArrayList<>();
-        Category categoriaSelecionada = this.categoryDAO.getByName(selectedCategoryName);
+        Category categoriaSelecionada = this.categoryDAO.getById(selectedCategoryId);
         
-        for (String keyword : keywords) {
-            Keyword key = this.keywordDAO.getByName(keyword);
+        for (ObjectId keyword : keywords) {
+            Keyword key = this.keywordDAO.getById(keyword);
             if (key != null) {
                 keywordList.add(key);
             }
@@ -79,28 +77,28 @@ public class DocumentController {
         }
         result.redirectTo(this).list();
     }
-    // ADICIONAR PATH /UPDATE/ ID
+    
     @Path("/update/{id}")
-    public void update(String fileName){
-        Document doc = this.documentDAO.getByName(fileName);
+    public void update(ObjectId id){
+        Document doc = this.documentDAO.getById(id);
         result.include("documento", doc);
         result.forwardTo(this).form();
     }
     
-    public void atualiza(String id, String description, String fileName, String date, String lastUpdate, String selectedCategoryName, String[] keywords) throws ParseException {
+    public void atualiza(ObjectId id, String description, String fileName, String date, String lastUpdate, ObjectId selectedCategoryId, ObjectId[] keywords) throws ParseException {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
         
         List<Keyword> keywordList = new ArrayList<>();
-        Category categoriaSelecionada = this.categoryDAO.getByName(selectedCategoryName);
+        Category categoriaSelecionada = this.categoryDAO.getById(selectedCategoryId);
         
-        for (String keyword : keywords) {
-            Keyword key = this.keywordDAO.getByName(keyword);
+        for (ObjectId keyword : keywords) {
+            Keyword key = this.keywordDAO.getById(keyword);
             if (key != null) {
                 keywordList.add(key);
             }
         }
         Document document = new Document(description, sdf.parse(date), sdf.parse(lastUpdate), fileName, loggedUser.getUsuario(), categoriaSelecionada, keywordList);
-
+        document.setId(id);
         
         validator.onErrorForwardTo(this).form();
         try {
@@ -113,8 +111,8 @@ public class DocumentController {
     }
     
     @Path("/delete/{id}")
-    public void delete(String id){
-        Document doc = this.documentDAO.getByName(id);
+    public void delete(ObjectId id){
+        Document doc = this.documentDAO.getById(id);
         this.documentDAO.delete(doc);
         result.forwardTo(this).list();
     }

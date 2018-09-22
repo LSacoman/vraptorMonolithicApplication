@@ -18,7 +18,7 @@
             <input type="password" class="form-control" name="usuario.senha"/>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">Gravar</button>
+            <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="left" title="Realizar Login">LogIn</button>
         </div>
     </form>
 
@@ -43,7 +43,7 @@
             <input type="password" class="form-control" name="usuario.senha"/>
         </div>
         <div class="form-group">
-            <button type="submit" class="btn btn-primary">registrar</button>
+            <button type="submit" class="btn btn-primary" data-toggle="tooltip" data-placement="left" title="Salvar Novo Usuario">registrar</button>
         </div>
     </form>
 </div>

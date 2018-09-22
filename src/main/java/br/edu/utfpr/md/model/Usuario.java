@@ -2,6 +2,7 @@ package br.edu.utfpr.md.model;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Entity;
 import org.mongodb.morphia.annotations.Id;
 
@@ -9,14 +10,14 @@ import org.mongodb.morphia.annotations.Id;
 public class Usuario {
 
     @Id
-    private int id;
+    private ObjectId id;
     private String nome;
     @NotNull
     private String usuario;
     @NotNull
     @Size(min = 6)
     private String senha;
-    private boolean Administrator;
+    private boolean administrator;
 
     public Usuario() {
     }
@@ -33,18 +34,18 @@ public class Usuario {
     }
 
     public boolean isAdministrator() {
-        return Administrator;
+        return administrator;
     }
 
     public void setAdministrator(boolean Administrator) {
-        this.Administrator = Administrator;
+        this.administrator = Administrator;
     }
 
-    public int getId() {
+    public ObjectId getId() {
         return id;
     }
 
-    public void setId(int id) {
+    public void setId(ObjectId id) {
         this.id = id;
     }
 
